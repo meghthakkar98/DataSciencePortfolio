@@ -63,26 +63,29 @@
         .card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
             border: 1px solid rgba(56, 189, 248, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
         .card:hover {
             border-color: rgba(56, 189, 248, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.1);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(56, 189, 248, 0.2);
         }
 
         /* Skill Badge */
         .skill-badge {
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid rgba(56, 189, 248, 0.3);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .skill-badge:hover {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: rgba(56, 189, 248, 0.5);
-            transform: scale(1.05);
+            background: rgba(56, 189, 248, 0.25);
+            border-color: rgba(56, 189, 248, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
         }
 
         /* Animated Underline */
@@ -113,6 +116,115 @@
 
         .link-underline.active::after {
             width: 100%;
+        }
+
+        /* Enhanced Interactive Elements */
+        a,
+        button,
+        .card,
+        .skill-badge,
+        .mobile-nav-item {
+            cursor: pointer;
+        }
+
+        /* Glow effect on primary buttons */
+        .bg-sky-500,
+        .hover\\:bg-sky-600,
+        .border-sky-500 {
+            transition: all 0.3s ease;
+        }
+
+        .bg-sky-500:hover {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6), 0 0 40px rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Custom Cursor Effects */
+        body {
+            cursor: none;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #38bdf8;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #38bdf8;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0 0 10px #38bdf8;
+        }
+
+        .cursor-spotlight {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #38bdf8;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            animation: particleFade 1s ease-out forwards;
+        }
+
+        @keyframes particleFade {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-30px);
+            }
+        }
+
+        /* Magnetic card effect */
+        .card {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Disable custom cursor on mobile */
+        @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
+
+            .custom-cursor,
+            .cursor-dot,
+            .cursor-spotlight {
+                display: none;
+            }
+        }
+
+        /* Enhanced scale on hover for icons */
+        .hover\\:scale-110:hover {
+            transform: scale(1.15);
+            filter: brightness(1.2);
         }
 
         /* Floating Animation */
@@ -361,6 +473,11 @@
 </head>
 
 <body class="antialiased">
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-spotlight" id="cursorSpotlight"></div>
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
 
     <!-- Floating Technology Logos Background -->
     <div class="floating-logos">
@@ -1166,6 +1283,117 @@
                 firstDesktopLink.classList.add('active');
             }
         });
+
+        // Custom Cursor Animation System
+        const cursor = document.getElementById('customCursor');
+        const cursorDot = document.getElementById('cursorDot');
+        const spotlight = document.getElementById('cursorSpotlight');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Update spotlight immediately for smooth effect
+            if (spotlight) {
+                spotlight.style.left = mouseX + 'px';
+                spotlight.style.top = mouseY + 'px';
+            }
+        });
+
+        // Smooth cursor following animation
+        function animateCursor() {
+            if (cursor && cursorDot) {
+                // Smooth lag effect for cursor ring
+                cursorX += (mouseX - cursorX) * 0.15;
+                cursorY += (mouseY - cursorY) * 0.15;
+
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+
+                // Instant follow for dot
+                cursorDot.style.left = mouseX + 'px';
+                cursorDot.style.top = mouseY + 'px';
+            }
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Particle trail effect
+        let lastParticleTime = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastParticleTime > 50) { // Create particle every 50ms
+                createParticle(e.clientX, e.clientY);
+                lastParticleTime = now;
+            }
+        });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+
+            // Random slight offset for natural look
+            const offsetX = (Math.random() - 0.5) * 10;
+            const offsetY = (Math.random() - 0.5) * 10;
+            particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+            document.body.appendChild(particle);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+
+        // Magnetic 3D card tilt effect
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Calculate rotation based on mouse position
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // Cursor scale effect on interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .skill-badge');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if (cursor && cursorDot) {
+                    cursor.style.transform = 'scale(1.8)';
+                    cursor.style.borderColor = '#0ea5e9';
+                    cursorDot.style.transform = 'scale(0)';
+                }
+            });
+
+            el.addEventListener('mouseleave', () => {
+                if (cursor && cursorDot) {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.borderColor = '#38bdf8';
+                    cursorDot.style.transform = 'scale(1)';
+                }
+            });
+        });
+
     </script>
 </body>
 
