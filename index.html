@@ -30,6 +30,8 @@
 
         body {
             background-color: #0f172a;
+            background-image: radial-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: #e2e8f0;
         }
 
@@ -53,7 +55,7 @@
 
         /* Gradient Text */
         .gradient-text {
-            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #0ea5e9 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -372,7 +374,7 @@
         /* Section Divider */
         .section-divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent 0%, #38bdf8 50%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, #38bdf8 25%, #818cf8 75%, transparent 100%);
             opacity: 0.3;
         }
 
@@ -397,6 +399,19 @@
             bottom: 0;
             width: 2px;
             background: linear-gradient(180deg, #38bdf8 0%, rgba(56, 189, 248, 0.3) 100%);
+        }
+
+        /* Avatar pulse glow animation */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @keyframes avatarPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5), 0 0 20px rgba(56, 189, 248, 0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(56, 189, 248, 0), 0 0 40px rgba(129, 140, 248, 0.4); }
+        }
+        .avatar-glow {
+            animation: avatarPulse 2.5s ease-in-out infinite;
         }
 
         /* Mobile Bottom Navigation */
@@ -473,6 +488,9 @@
 </head>
 
 <body class="antialiased">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scrollProgress" style="position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#38bdf8,#818cf8);z-index:9999;transition:width 0.1s;"></div>
 
     <!-- Custom Cursor Elements -->
     <div class="cursor-spotlight" id="cursorSpotlight"></div>
@@ -570,12 +588,21 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center fade-in">
 
+                <!-- Initials Avatar -->
+                <div class="flex justify-center mb-8">
+                    <div class="avatar-glow w-28 h-28 rounded-full bg-gradient-to-br from-sky-400 via-indigo-500 to-sky-600 p-[3px]">
+                        <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
+                            <span class="text-3xl font-bold gradient-text select-none">MT</span>
+                        </div>
+                    </div>
+                </div>
+
                 <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
                     <span class="gradient-text">Megh Thakkar</span>
                 </h1>
 
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-300 mb-6">
-                    AI Engineer
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-300 mb-6 h-12 flex items-center justify-center">
+                    <span id="typewriter" class="gradient-text"></span><span id="typewriterCursor" class="text-sky-400 ml-0.5" style="animation: blink 1s step-end infinite;">|</span>
                 </h2>
 
                 <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
@@ -594,6 +621,11 @@
                         class="inline-flex items-center justify-center px-8 py-3 border-2 border-sky-500 text-sky-400 hover:bg-sky-500/10 font-medium rounded-lg transition">
                         <i class="fas fa-envelope mr-2"></i>
                         Get in Touch
+                    </a>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition border border-slate-600">
+                        <i class="fas fa-download mr-2"></i>
+                        Download Resume
                     </a>
                 </div>
 
@@ -622,6 +654,30 @@
             <a href="#about" class="block animate-bounce">
                 <i class="fas fa-chevron-down text-sky-400 text-2xl"></i>
             </a>
+        </div>
+    </section>
+
+    <!-- Stats / Metrics Bar -->
+    <section class="py-10 border-y border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center" id="statsGrid">
+                <div class="p-4">
+                    <p class="text-4xl font-bold gradient-text" data-target="1" data-suffix="+">0</p>
+                    <p class="text-slate-400 text-sm mt-2">Years Production AI Experience</p>
+                </div>
+                <div class="p-4">
+                    <p class="text-4xl font-bold gradient-text" data-target="5000" data-suffix="K+">0</p>
+                    <p class="text-slate-400 text-sm mt-2">Documents in RAG Pipeline</p>
+                </div>
+                <div class="p-4">
+                    <p class="text-4xl font-bold gradient-text" data-target="40" data-suffix="%">0</p>
+                    <p class="text-slate-400 text-sm mt-2">Faster Formulation Generation</p>
+                </div>
+                <div class="p-4">
+                    <p class="text-4xl font-bold gradient-text" data-target="60" data-suffix="%">0</p>
+                    <p class="text-slate-400 text-sm mt-2">Deployment Time Reduction</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -860,6 +916,11 @@
                             class="text-xs px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full border border-sky-500/30">Azure
                             DevOps</span>
                     </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/50">
+                        <a href="#" class="inline-flex items-center border border-sky-500/40 text-sky-400 hover:bg-sky-500/10 rounded-lg px-4 py-2 text-sm transition">
+                            <i class="fab fa-github mr-2"></i>View on GitHub
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Food Formulation System -->
@@ -904,6 +965,11 @@
                             class="text-xs px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full border border-sky-500/30">MLflow</span>
                         <span
                             class="text-xs px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full border border-sky-500/30">AKS</span>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/50">
+                        <a href="#" class="inline-flex items-center border border-sky-500/40 text-sky-400 hover:bg-sky-500/10 rounded-lg px-4 py-2 text-sm transition">
+                            <i class="fab fa-github mr-2"></i>View on GitHub
+                        </a>
                     </div>
                 </div>
 
@@ -950,6 +1016,11 @@
                             Runtime</span>
                         <span
                             class="text-xs px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full border border-sky-500/30">FastAPI</span>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/50">
+                        <a href="#" class="inline-flex items-center border border-sky-500/40 text-sky-400 hover:bg-sky-500/10 rounded-lg px-4 py-2 text-sm transition">
+                            <i class="fab fa-github mr-2"></i>View on GitHub
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1104,7 +1175,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20">
+    <section id="contact" class="py-20 pb-24 md:pb-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="section-divider mb-16"></div>
 
@@ -1178,7 +1249,7 @@
     </nav>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-slate-800">
+    <footer class="py-8 border-t border-slate-800 mb-16 md:mb-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center text-slate-400">
                 <p>&copy; 2026 Megh Thakkar. All rights reserved.</p>
@@ -1189,6 +1260,66 @@
 
     <!-- Smooth Scroll Script -->
     <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+        });
+
+        // Typewriter Effect
+        const roles = ['AI Engineer', 'GenAI Architect', 'Computer Vision Expert', 'MLOps Specialist'];
+        let roleIndex = 0, charIndex = 0, isDeleting = false;
+        function typeWriter() {
+            const current = roles[roleIndex];
+            const el = document.getElementById('typewriter');
+            if (!el) return;
+            el.textContent = isDeleting ? current.substring(0, charIndex--) : current.substring(0, charIndex++);
+            if (!isDeleting && charIndex === current.length + 1) {
+                isDeleting = true;
+                setTimeout(typeWriter, 1500);
+                return;
+            }
+            if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+            setTimeout(typeWriter, isDeleting ? 60 : 100);
+        }
+        typeWriter();
+
+        // Count-Up Animation for Stats
+        function animateCountUp(el, target, suffix) {
+            const FRAME_TIME_MS = 16; // ~60fps
+            const duration = 1500;
+            const step = Math.ceil(target / (duration / FRAME_TIME_MS));
+            let current = 0;
+            const displaySuffix = suffix === 'K+' ? 'K+' : suffix;
+            const displayTarget = suffix === 'K+' ? 5 : target;
+            const displayStep = suffix === 'K+' ? 1 : step;
+            const timer = setInterval(() => {
+                current = Math.min(current + displayStep, displayTarget);
+                el.textContent = current + displaySuffix;
+                if (current >= displayTarget) clearInterval(timer);
+            }, FRAME_TIME_MS);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statEls = entry.target.querySelectorAll('[data-target]');
+                    statEls.forEach(el => {
+                        const target = parseInt(el.getAttribute('data-target'));
+                        const suffix = el.getAttribute('data-suffix') || '';
+                        animateCountUp(el, target, suffix);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const statsGrid = document.getElementById('statsGrid');
+        if (statsGrid) statsObserver.observe(statsGrid);
+
         // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
