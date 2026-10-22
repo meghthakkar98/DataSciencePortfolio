@@ -91,7 +91,11 @@
     .wrap { width: var(--page); margin-inline: auto; }
 
     .hero {
-      padding: 172px 0 96px;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 118px 0 56px;
       border-bottom: 1px solid var(--line);
       overflow: hidden;
     }
@@ -137,7 +141,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 30px 56px;
-      margin: 76px 0 0;
+      margin: 48px 0 0;
       padding-top: 28px;
       border-top: 1px solid var(--soft-line);
     }
@@ -155,7 +159,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
       gap: clamp(36px, 5vw, 72px);
-      align-items: start;
+      align-items: center;
     }
     .hero-copy { min-width: 0; }
     .hero-copy .hero-kicker { margin-top: 0; }
@@ -205,9 +209,9 @@
     }
     .code-body {
       margin: 0;
-      padding: 20px 20px 18px;
+      padding: 16px 18px 14px;
       overflow-x: auto;
-      font: 400 13px/1.75 "Roboto Mono", monospace;
+      font: 400 12.5px/1.6 "Roboto Mono", monospace;
       tab-size: 4;
     }
     .code-body code { font: inherit; }
@@ -1949,7 +1953,6 @@
     /* Large monitors and TVs: use the extra width instead of stranding the page in the middle. */
     @media (min-width: 1600px) {
       :root { --page: min(1360px, calc(100vw - 96px)); }
-      .hero { padding-top: 196px; }
       .hero h1 { font-size: 76px; }
       .section-shell { padding: 190px 0; }
     }
@@ -2144,25 +2147,17 @@
               <span class="code-lang">Python</span>
             </div>
             <pre class="code-body" aria-hidden="true"><code><span class="code-line" data-n="1"><span class="tok-com"># production &gt; demo</span></span>
-<span class="code-line" data-n="2"> </span>
-<span class="code-line" data-n="3"><span class="tok-kw">from</span> <span class="tok-var">megh</span> <span class="tok-kw">import</span> <span class="tok-var">vision, rag, mlops</span></span>
-<span class="code-line" data-n="4"> </span>
-<span class="code-line" data-n="5"><span class="tok-kw">def</span> <span class="tok-fn">build_ai</span><span class="tok-var">(problem):</span></span>
-<span class="code-line" data-n="6"><span class="tok-var">    </span><span class="tok-str">&quot;&quot;&quot;Ship systems that hold up live.&quot;&quot;&quot;</span></span>
-<span class="code-line" data-n="7"> </span>
-<span class="code-line" data-n="8"><span class="tok-var">    context = </span><span class="tok-fn">understand</span><span class="tok-var">(problem)</span></span>
-<span class="code-line" data-n="9"><span class="tok-var">    model   = vision.</span><span class="tok-fn">train</span><span class="tok-var">(context)</span></span>
-<span class="code-line" data-n="10"><span class="tok-var">    answer  = rag.</span><span class="tok-fn">ground</span><span class="tok-var">(model)</span></span>
+<span class="code-line" data-n="2"><span class="tok-kw">from</span> <span class="tok-var">megh</span> <span class="tok-kw">import</span> <span class="tok-var">vision, rag, mlops</span></span>
+<span class="code-line" data-n="3"> </span>
+<span class="code-line" data-n="4"><span class="tok-kw">def</span> <span class="tok-fn">build_ai</span><span class="tok-var">(problem):</span></span>
+<span class="code-line" data-n="5"><span class="tok-var">    </span><span class="tok-str">&quot;&quot;&quot;Ship systems that hold up live.&quot;&quot;&quot;</span></span>
+<span class="code-line" data-n="6"><span class="tok-var">    context = </span><span class="tok-fn">understand</span><span class="tok-var">(problem)</span></span>
+<span class="code-line" data-n="7"><span class="tok-var">    model   = vision.</span><span class="tok-fn">train</span><span class="tok-var">(context)</span></span>
+<span class="code-line" data-n="8"><span class="tok-var">    answer  = rag.</span><span class="tok-fn">ground</span><span class="tok-var">(model)</span></span>
+<span class="code-line" data-n="9"><span class="tok-var">    </span><span class="tok-kw">return</span><span class="tok-var"> mlops.</span><span class="tok-fn">deploy</span><span class="tok-var">(answer,</span></span>
+<span class="code-line" data-n="10"><span class="tok-var">        latency_ms=</span><span class="tok-num">38</span><span class="tok-var">, fps=</span><span class="tok-num">60</span><span class="tok-var">, monitored=</span><span class="tok-num">True</span><span class="tok-var">)</span></span>
 <span class="code-line" data-n="11"> </span>
-<span class="code-line" data-n="12"><span class="tok-var">    </span><span class="tok-kw">return</span><span class="tok-var"> mlops.</span><span class="tok-fn">deploy</span><span class="tok-var">(</span></span>
-<span class="code-line" data-n="13"><span class="tok-var">        answer,</span></span>
-<span class="code-line" data-n="14"><span class="tok-var">        latency_ms=</span><span class="tok-num">38</span><span class="tok-var">,</span></span>
-<span class="code-line" data-n="15"><span class="tok-var">        fps=</span><span class="tok-num">60</span><span class="tok-var">,</span></span>
-<span class="code-line" data-n="16"><span class="tok-var">        monitored=</span><span class="tok-num">True</span><span class="tok-var">,</span></span>
-<span class="code-line" data-n="17"><span class="tok-var">    )</span></span>
-<span class="code-line" data-n="18"> </span>
-<span class="code-line" data-n="19"><span class="tok-com"># if it only works on my laptop,</span></span>
-<span class="code-line" data-n="20"><span class="tok-com"># it doesn&rsquo;t work.</span></span></code></pre>
+<span class="code-line" data-n="12"><span class="tok-com"># if it only works on my laptop, it doesn&rsquo;t work.</span></span></code></pre>
             <figcaption class="code-window-foot" aria-hidden="true"><span class="dot-live">In production</span><span>Python 3.12</span><span>evals passing</span></figcaption>
           </figure>
         </div>
