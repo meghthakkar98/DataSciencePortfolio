@@ -2631,9 +2631,7 @@
       var intro = document.getElementById('intro');
       if (!intro) return;
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var seen = false;
-      try { seen = window.sessionStorage.getItem('mt-intro-seen') === '1'; } catch (error) { seen = false; }
-      if (reduced || seen) {
+      if (reduced) {
         if (intro.parentNode) intro.parentNode.removeChild(intro);
         return;
       }
@@ -2644,7 +2642,6 @@
         if (done) return;
         done = true;
         window.clearTimeout(timer);
-        try { window.sessionStorage.setItem('mt-intro-seen', '1'); } catch (error) {}
         document.body.classList.remove('intro-lock');
         document.body.classList.add('intro-played');
         intro.classList.add('intro-done');
