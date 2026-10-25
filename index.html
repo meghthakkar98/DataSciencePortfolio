@@ -135,6 +135,12 @@
       letter-spacing: .06em;
       text-transform: uppercase;
     }
+    .hero-name {
+      color: var(--accent);
+      font-size: 1.35em;
+      font-weight: 600;
+      line-height: 1;
+    }
     .hero h1 {
       max-width: 800px;
       margin: 0;
@@ -265,6 +271,20 @@
     .tok-str { color: var(--muted); }
     .tok-num { color: var(--ink); }
     .tok-var { color: var(--ink); }
+    /* Typewriter: unrevealed characters stay in place but invisible, so the
+       full code block reserves its final size from the start (no layout shift). */
+    .code-body.is-typing .tw-ch { visibility: hidden; }
+    .code-body.is-typing .tw-ch.on { visibility: visible; }
+    .tw-caret {
+      display: inline-block;
+      width: 7px;
+      height: 1.05em;
+      margin: 0 -8px 0 1px;
+      background: var(--accent);
+      vertical-align: -0.16em;
+      animation: tw-blink 1.05s steps(1, end) infinite;
+    }
+    @keyframes tw-blink { 0%, 54% { opacity: 1; } 55%, 100% { opacity: 0; } }
     .code-window-foot {
       display: flex;
       flex-wrap: wrap;
@@ -2356,7 +2376,7 @@
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="hero-kicker">Megh Thakkar · Chicago, Illinois</p>
+            <p class="hero-kicker"><span class="hero-name">Megh Thakkar</span> · Chicago, Illinois</p>
             <h1 id="hero-title">I build production AI systems.</h1>
             <p class="hero-summary">Enterprise retrieval and agent workflows, real-time computer vision, and the MLOps behind them — engineered to move beyond a demo and hold up in the real world.</p>
             <div class="hero-actions">
@@ -2698,6 +2718,91 @@
         if (event.key === 'Escape') end();
         if (event.key === ' ') { event.preventDefault(); end(); }
       });
+    }());
+  </script>
+  <script>
+    /* Typewriter for the hero code window (how_i_work.py): the code types
+       itself out once, character by character, as soon as the hero becomes
+       visible (intro finished or skipped), then stays on screen with the
+       caret blinking at the end. Reduced-motion visitors keep the full
+       code instantly — no typing, no caret. */
+    (function () {
+      'use strict';
+      var pre = document.querySelector('.code-body');
+      if (!pre) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var code = pre.querySelector('code');
+      if (!code) return;
+
+      /* Split every character into its own span, leaving the token spans
+         (and their syntax colors) untouched. Unrevealed characters are
+         visibility:hidden, so they keep occupying their space and the
+         card never moves or resizes while typing. */
+      var chars = [];
+      code.querySelectorAll('.code-line').forEach(function (line) {
+        var lineChars = [];
+        var walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(function (textNode) {
+          var fragment = document.createDocumentFragment();
+          textNode.nodeValue.split('').forEach(function (ch) {
+            var span = document.createElement('span');
+            span.className = 'tw-ch';
+            span.textContent = ch;
+            fragment.appendChild(span);
+            lineChars.push(span);
+          });
+          textNode.parentNode.replaceChild(fragment, textNode);
+        });
+        lineChars.forEach(function (span, i) {
+          chars.push({ el: span, lineEnd: i === lineChars.length - 1 });
+        });
+      });
+      if (!chars.length) return;
+
+      var caret = document.createElement('span');
+      caret.className = 'tw-caret';
+      caret.setAttribute('aria-hidden', 'true');
+      chars[0].el.parentNode.insertBefore(caret, chars[0].el);
+      pre.classList.add('is-typing');
+
+      var index = 0;
+      var started = false;
+      function typeNext() {
+        if (index >= chars.length) return; /* typed once: full code stays, caret keeps blinking */
+        var item = chars[index];
+        item.el.classList.add('on');
+        item.el.parentNode.insertBefore(caret, item.el.nextSibling);
+        index += 1;
+        var delay = 8 + Math.random() * 11;
+        if (item.lineEnd) delay += 110; /* a short beat at the end of each line */
+        window.setTimeout(typeNext, delay);
+      }
+      function start() {
+        if (started) return;
+        started = true;
+        window.setTimeout(typeNext, 250);
+      }
+      if (document.body.classList.contains('intro-played') || !document.getElementById('intro')) {
+        start();
+      } else {
+        var observer = new MutationObserver(function () {
+          if (document.body.classList.contains('intro-played')) {
+            observer.disconnect();
+            start();
+          }
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        /* Safety net: if the intro element is gone, start anyway. */
+        window.setTimeout(function () {
+          if (!document.getElementById('intro')) {
+            observer.disconnect();
+            start();
+          }
+        }, 8000);
+      }
     }());
   </script>
   <script>
